@@ -10,7 +10,7 @@ TITLE_SIZE = 30
 STARTING_STEPS = ["step", "step", "step", "step"]
 
 class Program(pygame.sprite.Sprite):
-    def __init__(self, steps=[]):
+    def __init__(self, steps=STARTING_STEPS):
         # Call the parent constructor
         super(Program, self).__init__()
 
@@ -20,6 +20,7 @@ class Program(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.y = 0
         self.rect.x = constants.LVL_WIDTH + constants.CMD_WIDTH
+        self.step_list = steps
 
         self.render_text()
         self.render_actions()
@@ -37,11 +38,24 @@ class Program(pygame.sprite.Sprite):
         self.image.blit(text, (10, 10))
 
     def render_steps(self):
-        pass
+        self.steps = ProgramList(self.step_list)
+        self.image.blit(self.steps.image, (10, 50))
 
 class ProgramList(pygame.sprite.Sprite):
+    BG_COLOR    = h2r("#0BD91E")
+
     def __init__(self, steps=[]):
-        pass
+        self.image = pygame.Surface([constants.PRG_WIDTH-20, 384-50])
+        self.image.fill(BG_COLOR)
+
+        for i, step in enumerate(steps):
+            self.render_step(i, step)
+
+    def render_step(self, i, step):
+        font = constants.get_font(24)
+        text = font.render(step, True, COLOR_WHITE)
+
+        self.image.blit(text, (20, i*30))
 
 class ProgramActions(pygame.sprite.Sprite):
     PLAY_COLOR    = h2r("#0BD91E")
@@ -49,9 +63,9 @@ class ProgramActions(pygame.sprite.Sprite):
     STOP_COLOR    = h2r("#CC0000")
     STEP_COLOR    = h2r("#0085BF")
     DISABLE_COLOR = h2r("#999999")
-    
+
     ICON_Y = 8
-    
+
     def __init__(self):
         super(ProgramActions, self).__init__()
 
