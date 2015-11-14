@@ -19,7 +19,7 @@ class Editor(ClickHandler):
         self._program.add(Program())
 
         self._levels = pygame.sprite.Group()
-        self._levels.add(Levels(level._number, 2))
+        self._levels.add(Levels(level._number))
 
         self.children = [self._commands, self._program, self._levels]
 
