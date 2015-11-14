@@ -27,7 +27,7 @@ class Command(pygame.sprite.Sprite, ClickHandler):
 
         self.image.blit(text, ((TKN_WIDTH - text.get_width())/2, (TKN_HEIGHT - text.get_height())/2))
 
-class CommandsBox(pygame.sprite.Sprite):
+class CommandsBox(pygame.sprite.Sprite, ClickHandler):
     def __init__(self, commands=[]):
         # Call the parent constructor
         super(CommandsBox, self).__init__()
