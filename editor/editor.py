@@ -3,6 +3,7 @@ import pygame
 from command import Command, CommandsBox
 from program import Program
 from events.click import ClickHandler
+from levels import Levels, LevelBox
 
 class Editor(ClickHandler):
     def __init__(self, rect, color, canvas, level):
@@ -17,11 +18,20 @@ class Editor(ClickHandler):
         self._program = pygame.sprite.Group()
         self._program.add(Program())
 
-        self.children = [self._commands, self._program]
+        self._levels = pygame.sprite.Group()
+        self._levels.add(Levels(level._number, 2))
+
+        self.children = [self._commands, self._program, self._levels]
 
     def draw(self):
         self._editor.fill(self._color)
+
         self._commands.draw(self._editor)
         for box in self._commands:
             box._commands.draw(self._editor)
+
         self._program.draw(self._editor)
+
+        self._levels.draw(self._editor)
+        for level in self._levels:
+            level._boxes.draw(self._editor)
