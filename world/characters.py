@@ -41,21 +41,27 @@ class Speed:
 class Character(pygame.sprite.Sprite):
 	""" State and basic functionality of a movable character """
 
-	def __init__(self, position):
+	def __init__(self, position, width_unit):
 		""" Constructor """
 		super(Character, self).__init__()
 		self.position = position
+		self.size = (0, 0)
 		self.face = Face.RIGHT
 		self.speed = Speed.STOP
 		self.is_jumping = False
 		self.is_rolling = False
+		self.is_falling = False
 		self.health = 1
 		self.has_health = True
 
-	def draw(self):
-		""" Draw the character """
-		pass
+	def step(self, level):
+		""" Update the character's position """
+		if not Speed.is_stopped(self.speed):
+			self.position.x += self.face * self.size[0] * self.speed
 
+		if is_falling and level.hole_beneath(self):
+			self.position.y += self.size[1]
+			self.health = 0
 
 class Player(Character):
 	""" Main character with appropriate controls that the World can control """
@@ -63,5 +69,12 @@ class Player(Character):
 	def __init__(self, position, size, color):
 		""" Constructor """
 		super(Player, self).__init__(position)
+		# Properties
+		self.speed = Speed.WALK
+		self.is_falling = True
+
+		# Image
+		self.size = size
 		self.image = pygame.Surface([size[0], size[1]])
 		self.image.fill(color)
+

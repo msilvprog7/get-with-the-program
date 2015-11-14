@@ -18,6 +18,20 @@ class World:
 		self.player = player
 		self.player.position = (50, 50)
 
+		# State of the system running
+		self.running = False
+
+	def run(self):
+		""" Start the level """
+
+		self.running = True
+
 	def draw(self):
+		""" Draw the world (including level and player) """
+		if self.running:
+			self.player.update()
+
 		self.world.fill(self.color)
 		self.world.blit(self.player.image, self.player.position)
+
+		

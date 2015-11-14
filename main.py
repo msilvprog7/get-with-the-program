@@ -8,7 +8,8 @@ size = width, height = 1024, 768
 
 colors = {
     'black': (0, 0, 0),
-    'white': (255, 255, 255)
+    'white': (255, 255, 255),
+    'green': (0, 255, 0)
 }
 
 if __name__ == '__main__':
@@ -20,10 +21,12 @@ if __name__ == '__main__':
     done   = False
 
     # Create main entities
-    player = Player(position=(0, 0), size=(15, 15), color=colors['white'])
-    world = World(canvas, pygame.Rect(0, 0, 1024, 384), colors['black'], player)
-    editor = Editor(pygame.Rect(0, 384, 1024, 384), colors['white'], canvas)
+    player = Player(position=(0, 0), size=(25, 45), color=colors['green'])
+    world = World(canvas, pygame.Rect(0, 0, 1024, 384), colors['white'], player)
+    world.run()
     
+    editor = Editor(pygame.Rect(0, 384, 1024, 384), colors['white'], canvas)
+
     while not done:
         clock.tick(framerate)
 
