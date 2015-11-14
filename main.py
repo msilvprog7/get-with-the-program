@@ -1,6 +1,7 @@
 import pygame
 from world.world import World
 from editor.editor import Editor
+from level import Level
 
 framerate = 60
 size = width, height = 1024, 768
@@ -18,8 +19,10 @@ if __name__ == '__main__':
     clock  = pygame.time.Clock()
     done   = False
 
+    levels = [Level(1, '-------', ['Step']), Level(2, '---_---', ['Step', 'Jump'])]
+
     world = World(pygame.Rect(0, 0, 1024, 384), colors['black'], canvas)
-    editor = Editor(pygame.Rect(0, 384, 1024, 384), colors['white'], canvas)
+    editor = Editor(pygame.Rect(0, 384, 1024, 384), colors['white'], canvas, levels[1])
 
     while not done:
         clock.tick(framerate)
