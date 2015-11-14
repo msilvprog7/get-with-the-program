@@ -1,6 +1,7 @@
 import pygame
 import constants
 from constants import hex_to_rgb as h2r
+from events.click import ClickHandler
 
 BG_COLOR    = h2r("#333333")
 COLOR_WHITE = h2r("#ffffff")
@@ -9,7 +10,7 @@ TITLE_SIZE = 30
 
 STARTING_STEPS = ["step", "step", "step", "step"]
 
-class Program(pygame.sprite.Sprite):
+class Program(pygame.sprite.Sprite,ClickHandler):
     def __init__(self, steps=STARTING_STEPS):
         # Call the parent constructor
         super(Program, self).__init__()
@@ -23,8 +24,12 @@ class Program(pygame.sprite.Sprite):
         self.step_list = steps
 
         self.render_text()
+        
         self.render_actions()
+        # self.children.append(self.actions)
+        
         self.render_steps()
+        # self.children.append(self.steps)
 
     def render_actions(self):
         self.actions = ProgramActions()
@@ -42,11 +47,11 @@ class Program(pygame.sprite.Sprite):
         self.image.blit(self.steps.image, (10, 50))
 
 class ProgramList(pygame.sprite.Sprite):
-    BG_COLOR    = h2r("#0BD91E")
+    BG_COLOR    = h2r("#0085BF")
 
     def __init__(self, steps=[]):
         self.image = pygame.Surface([constants.PRG_WIDTH-20, 384-50])
-        self.image.fill(BG_COLOR)
+        self.image.fill(self.BG_COLOR)
 
         for i, step in enumerate(steps):
             self.render_step(i, step)

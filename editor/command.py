@@ -50,9 +50,6 @@ class CommandsBox(pygame.sprite.Sprite, ClickHandler):
             
         self.render_title()
 
-    def click(self, event):
-        print "Clicked commands"
-
     def render_title(self):
         font = get_font(TITLE_SIZE)
         text = font.render("Available Actions", True, hex_to_rgb("#FFFFFF"))

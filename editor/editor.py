@@ -21,7 +21,11 @@ class Editor(ClickHandler):
         self._levels = pygame.sprite.Group()
         self._levels.add(Levels(level._number))
 
-        self.children = [self._commands, self._program, self._levels]
+        for command in self._commands.sprites()[0]._commands:
+            self.children.append(command)
+        self.children.append(self._program)
+        for box in self._levels.sprites()[0]._boxes:
+            self.children.append(box)
 
     def draw(self):
         self._editor.fill(self._color)

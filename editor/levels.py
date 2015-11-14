@@ -23,8 +23,6 @@ class Levels(pygame.sprite.Sprite):
             pos += 1
         self._boxes.add(LevelBox(to_display, False, pos))
 
-
-
 class LevelBox(pygame.sprite.Sprite):
     def __init__(self, number, completed, position):
         super(LevelBox, self).__init__()
@@ -40,8 +38,12 @@ class LevelBox(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.y = position * 64
         self.rect.x = 0
+        self.level_number = number
 
         font = get_font(TOKEN_SIZE)
         text = font.render(str(number), True, hex_to_rgb(text_color))
 
         self.image.blit(text, ((LVL_WIDTH - text.get_width())/2, (LVL_HEIGHT - text.get_height())/2))
+
+    def click(self, event):
+        print "Clicked level", self.level_number

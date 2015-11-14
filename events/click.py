@@ -4,15 +4,14 @@ class ClickHandler():
     children = []
 
     def click(self, event):
+        br = get_bounding_rect_for_obj(self)
+        event.pos = (event.pos[0] - br.x, event.pos[1] - br.y)
         return delegate(self.children, event)
 
 def delegate(children, event):
-    print event.pos
-    
     for child in children:
         print "Trying", child
         br = get_bounding_rect_for_obj(child)
-        print br
 
         did_collide = False
         try:
@@ -22,17 +21,25 @@ def delegate(children, event):
             continue
 
         if did_collide:
-            print "Collided!"
             try:
-                return child.click(event)
+                return click_attempt(child, event)
             except AttributeError as e:
-                print "Unable to pass click event to child because it doesn't handle clicks."
-                print child
-                print event
+                print "Unable to pass click event to child because it doesn't handle clicks.", child
+                print e
                 return
-                
+
+def click_attempt(child, event):
+    if isinstance(child, pygame.sprite.Group):
+        return child.sprites()[0].click(event)
+
+    return child.click(event)
 
 def get_bounding_rect_for_obj(child):
+    try:
+        return child.rect
+    except AttributeError as e:
+        pass
+    
     try:
         return child.image.get_bounding_rect()
     except AttributeError as e:
@@ -50,7 +57,12 @@ def get_bounding_rect_for_obj(child):
 
     try:
         if len(child.sprites()) == 1:
-            print "Get the first bounding box in the group"
+            return child.sprites()[0].rect
+    except Exception as e:
+        pass
+
+    try:
+        if len(child.sprites()) == 1:
             return child.sprites()[0].image.get_bounding_rect()
     except Exception as e:
         pass
