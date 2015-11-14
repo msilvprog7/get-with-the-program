@@ -101,11 +101,26 @@ class UnaryExpression():
 class Statement():
     pass
 
+
+class RepeatStatement():
+    num = 0
+    body = None
+
+    def __init__(self, num, body):
+        self.num = num
+        self.body = body
+
+    def run(self, state):
+        counter = 0
+        while counter < self.num:
+            val, state = self.body.run(state)
+            counter += 1
+
 class WhileStatement():
     condition = None
     body = None
 
-    def __init__(condition, body):
+    def __init__(self, condition, body):
         self.condition = condition
         self.body = body
 
@@ -124,7 +139,7 @@ class WhileStatement():
 class SequenceStatement():
     substatements = []
 
-    def __init__(sub):
+    def __init__(self, sub):
         self.substatements = sub
 
     def run(self, state):
@@ -137,7 +152,7 @@ class IfStatement():
     then_statement = None
     else_statement = None
 
-    def __init__(condition, then, els):
+    def __init__(self, condition, then, els):
         self.condition = condition
         self.then_statement = then
         self.else_statement = els
