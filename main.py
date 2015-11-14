@@ -1,5 +1,6 @@
 import pygame
 from world.world import World
+from world.characters import Player
 
 framerate = 60
 size = width, height = 1024, 768
@@ -17,7 +18,9 @@ if __name__ == '__main__':
     clock  = pygame.time.Clock()
     done   = False
 
-    world = World(pygame.Rect(0, 0, 1024, 384), colors['black'], canvas)
+    # Create main entities
+    player = Player(position=(0, 0), size=(15, 15), color=colors['white'])
+    world = World(canvas, pygame.Rect(0, 0, 1024, 384), colors['black'], player)
     editor_rect = pygame.Rect(0, 384, 1024, 384)
 
     editor = canvas.subsurface(editor_rect)

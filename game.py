@@ -8,7 +8,7 @@ class Player(pygame.sprite.Sprite):
         # Set height, width
         self.image = pygame.Surface([15, 15])
         self.image.fill((255, 255, 255))
-
+        
         # Make our top-left corner the passed-in location
         self.rect = self.image.get_rect()
         self.rect.y = y
