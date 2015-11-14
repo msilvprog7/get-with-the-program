@@ -1,12 +1,5 @@
+from constants import *
 import pygame
-
-LVL_WIDTH  = 64
-CMD_WIDTH  = 512
-PRG_WIDTH  = CMD_WIDTH - LVL_WIDTH
-
-TKN_WIDTH  = 156
-TKN_HEIGHT = 48
-TKN_PDDNG  = ( CMD_WIDTH - 3 * TKN_WIDTH ) / 4
 
 class Command(pygame.sprite.Sprite):
     def __init__(self, x, y, width, height, color, label):
@@ -25,7 +18,7 @@ class Command(pygame.sprite.Sprite):
 
     def render_text(self, label, font_size):
         font = pygame.font.Font(None, font_size)
-        text = font.render(label, True, (255,255,255))
+        text = font.render(label, True, hex_to_rgb("#FFFFFF"))
 
         self.image.blit(text, ((TKN_WIDTH - text.get_width())/2, (TKN_HEIGHT - text.get_height())/2))
 
@@ -35,14 +28,14 @@ class CommandsBox(pygame.sprite.Sprite):
         super(CommandsBox, self).__init__()
 
         self.image = pygame.Surface([CMD_WIDTH, 384])
-        self.image.fill((200, 200, 200))
+        self.image.fill(hex_to_rgb("#CCCCCC"))
 
         self.rect = self.image.get_rect()
         self.rect.y = 0
         self.rect.x = LVL_WIDTH
 
         x, y = LVL_WIDTH + TKN_PDDNG, TKN_PDDNG
-        color = (144, 144, 190)
+        color = hex_to_rgb("#CCFFDD")
         self._commands = pygame.sprite.Group()
         for command in commands:
             self._commands.add(Command(x, y, TKN_WIDTH, TKN_HEIGHT, color, command))
