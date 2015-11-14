@@ -1,5 +1,6 @@
 import pygame
 from world.world import World
+from editor.editor import Editor
 
 framerate = 60
 size = width, height = 1024, 768
@@ -18,10 +19,8 @@ if __name__ == '__main__':
     done   = False
 
     world = World(pygame.Rect(0, 0, 1024, 384), colors['black'], canvas)
-    editor_rect = pygame.Rect(0, 384, 1024, 384)
+    editor = Editor(pygame.Rect(0, 384, 1024, 384), colors['white'], canvas)
 
-    editor = canvas.subsurface(editor_rect)
-    
     while not done:
         clock.tick(framerate)
 
@@ -31,8 +30,8 @@ if __name__ == '__main__':
         #sprites.update()
         world.draw()
         screen.blit(world.world, (0, 0))
-        editor.fill(colors['white'])
-        screen.blit(editor, (0, 384))
+        editor.draw()
+        screen.blit(editor._editor, (0, 384))
         #sprites.draw(screen)
         pygame.display.flip()
 
