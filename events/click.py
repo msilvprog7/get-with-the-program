@@ -5,12 +5,13 @@ class ClickHandler():
 
     def click(self, event):
         br = get_bounding_rect_for_obj(self)
+        # print self, br
         event.pos = (event.pos[0] - br.x, event.pos[1] - br.y)
         return delegate(self.children, event)
 
 def delegate(children, event):
     for child in children:
-        print "Trying", child
+        # print "Trying", child
         br = get_bounding_rect_for_obj(child)
 
         did_collide = False
@@ -29,9 +30,6 @@ def delegate(children, event):
                 return
 
 def click_attempt(child, event):
-    if isinstance(child, pygame.sprite.Group):
-        return child.sprites()[0].click(event)
-
     return child.click(event)
 
 def get_bounding_rect_for_obj(child):

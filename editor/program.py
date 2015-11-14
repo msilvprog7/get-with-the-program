@@ -14,6 +14,7 @@ class Program(pygame.sprite.Sprite,ClickHandler):
     def __init__(self, steps=STARTING_STEPS):
         # Call the parent constructor
         super(Program, self).__init__()
+        self.children = []
 
         self.image = pygame.Surface([constants.PRG_WIDTH, 384])
         self.image.fill(BG_COLOR)
@@ -26,14 +27,16 @@ class Program(pygame.sprite.Sprite,ClickHandler):
         self.render_text()
         
         self.render_actions()
-        # self.children.append(self.actions)
+        self.children.append(self.actions)
         
         self.render_steps()
-        # self.children.append(self.steps)
+        self.children.append(self.steps)
 
     def render_actions(self):
-        self.actions = ProgramActions()
+        self.actions = ProgramActions(0, 0)
         right = self.image.get_width() - self.actions.image.get_width()
+        self.actions.rect.x = right
+        self.actions.rect.y = 10
         self.image.blit(self.actions.image, (right, 10))
 
     def render_text(self):
@@ -43,18 +46,27 @@ class Program(pygame.sprite.Sprite,ClickHandler):
         self.image.blit(text, (10, 10))
 
     def render_steps(self):
-        self.steps = ProgramList(self.step_list)
+        self.steps = ProgramList(10, 50, self.step_list)
         self.image.blit(self.steps.image, (10, 50))
 
 class ProgramList(pygame.sprite.Sprite):
     BG_COLOR    = h2r("#0085BF")
 
-    def __init__(self, steps=[]):
+    def __init__(self, x, y, steps=[]):
         self.image = pygame.Surface([constants.PRG_WIDTH-20, 384-50])
         self.image.fill(self.BG_COLOR)
 
+        self.rect = self.image.get_rect()
+        self.rect.x = x
+        self.rect.y = y
+
         for i, step in enumerate(steps):
             self.render_step(i, step)
+
+    def click(self, event):
+        y = event.pos[1] - self.rect.y
+        pos = y / 30
+        print "clicked item", pos
 
     def render_step(self, i, step):
         font = constants.get_font(24)
@@ -71,16 +83,33 @@ class ProgramActions(pygame.sprite.Sprite):
 
     ICON_Y = 8
 
-    def __init__(self):
+    def __init__(self, x, y):
         super(ProgramActions, self).__init__()
 
         self.image = pygame.Surface([170, 50])
         self.image.fill(BG_COLOR)
 
+        self.rect = self.image.get_rect()
+        self.rect.x = x
+        self.rect.y = y
+
         self.render_play(5, 0, True)
         self.render_step(45, 0, True)
         self.render_stop(85, 0, False)
         self.render_pause(125, 0, False)
+
+    def click(self, event):
+        x = event.pos[0] - self.rect.x
+        print x, self.rect.x
+
+        if x > 5 and x <= 35:
+            print "clicked play"
+        elif x > 45 and x <= 75:
+            print "clicked step"
+        elif x > 85 and x <= 115:
+            print "clicked stop"
+        elif x > 125:
+            print "clicked pause"
 
     def get_ctx(self):
         ctx = pygame.Surface([30, 30])

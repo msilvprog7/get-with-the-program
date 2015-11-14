@@ -23,7 +23,7 @@ class Editor(ClickHandler):
 
         for command in self._commands.sprites()[0]._commands:
             self.children.append(command)
-        self.children.append(self._program)
+        self.children.append(self._program.sprites()[0])
         for box in self._levels.sprites()[0]._boxes:
             self.children.append(box)
 

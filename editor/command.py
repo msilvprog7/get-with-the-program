@@ -2,7 +2,7 @@ from constants import *
 import pygame
 from events.click import ClickHandler
 
-class Command(pygame.sprite.Sprite, ClickHandler):
+class Command(pygame.sprite.Sprite):
     def __init__(self, x, y, width, height, color, label):
         # Call the parent constructor
         super(Command, self).__init__()
@@ -27,7 +27,7 @@ class Command(pygame.sprite.Sprite, ClickHandler):
 
         self.image.blit(text, ((TKN_WIDTH - text.get_width())/2, (TKN_HEIGHT - text.get_height())/2))
 
-class CommandsBox(pygame.sprite.Sprite, ClickHandler):
+class CommandsBox(pygame.sprite.Sprite):
     def __init__(self, commands=[]):
         # Call the parent constructor
         super(CommandsBox, self).__init__()
@@ -45,7 +45,6 @@ class CommandsBox(pygame.sprite.Sprite, ClickHandler):
         for command in commands:
             sprite = Command(x, y, TKN_WIDTH, TKN_HEIGHT, color, command)
             self._commands.add(sprite)
-            self.children.append(sprite)
             x, y = CommandsBox.compute_next_grid_location(x, y)
             
         self.render_title()
