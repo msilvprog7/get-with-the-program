@@ -8,7 +8,7 @@ COLOR_WHITE = h2r("#ffffff")
 
 TITLE_SIZE = 30
 
-STARTING_STEPS = ["step", "step", "step", "step"]
+STARTING_STEPS = ["Step", "Step", "Step", "Step"]
 
 class Program(pygame.sprite.Sprite,ClickHandler):
     def __init__(self, steps=STARTING_STEPS):
@@ -25,10 +25,10 @@ class Program(pygame.sprite.Sprite,ClickHandler):
         self.step_list = steps
 
         self.render_text()
-        
+
         self.render_actions()
         self.children.append(self.actions)
-        
+
         self.render_steps()
         self.children.append(self.steps)
 
@@ -46,19 +46,21 @@ class Program(pygame.sprite.Sprite,ClickHandler):
         self.image.blit(text, (10, 10))
 
     def render_steps(self):
-        self.steps = ProgramList(10, 50, self.step_list)
+        self.steps = ProgramList(10, 50, self.step_list, self)
         self.image.blit(self.steps.image, (10, 50))
 
 class ProgramList(pygame.sprite.Sprite):
     BG_COLOR    = h2r("#0085BF")
 
-    def __init__(self, x, y, steps=[]):
+    def __init__(self, x, y, steps, parent):
         self.image = pygame.Surface([constants.PRG_WIDTH-20, 384-50])
         self.image.fill(self.BG_COLOR)
 
         self.rect = self.image.get_rect()
         self.rect.x = x
         self.rect.y = y
+        self.steps = steps
+        self.parent = parent
 
         for i, step in enumerate(steps):
             self.render_step(i, step)
@@ -66,7 +68,21 @@ class ProgramList(pygame.sprite.Sprite):
     def click(self, event):
         y = event.pos[1] - self.rect.y
         pos = y / 30
+
+        if pos < len(self.steps):
+            ns = []
+            for i, step in enumerate(self.parent.step_list):
+                if i != pos: ns.append(step)
+            self.parent.step_list = ns
+            self.steps = ns
+            print "deleted", pos
         print "clicked item", pos
+
+        self.image.fill(self.BG_COLOR)
+        for i, step in enumerate(self.steps):
+            self.render_step(i, step)
+
+        self.parent.image.blit(self.image, (10, 50))
 
     def render_step(self, i, step):
         font = constants.get_font(24)

@@ -3,7 +3,7 @@ import pygame
 from events.click import ClickHandler
 
 class Command(pygame.sprite.Sprite):
-    def __init__(self, x, y, width, height, color, label):
+    def __init__(self, x, y, width, height, color, label, parent):
         # Call the parent constructor
         super(Command, self).__init__()
 
@@ -17,9 +17,12 @@ class Command(pygame.sprite.Sprite):
 
         self.text = label
         self.render_text(label, 24)
+        self.parent = parent
 
     def click(self, event):
         print "Clicked", self.text
+        self.parent.program.step_list.append(self.text)
+        self.parent.program.render_steps()
 
     def render_text(self, label, font_size):
         font = get_font(TOKEN_SIZE)
@@ -28,10 +31,12 @@ class Command(pygame.sprite.Sprite):
         self.image.blit(text, ((TKN_WIDTH - text.get_width())/2, (TKN_HEIGHT - text.get_height())/2))
 
 class CommandsBox(pygame.sprite.Sprite):
-    def __init__(self, commands=[]):
+    def __init__(self, commands, program):
         # Call the parent constructor
         super(CommandsBox, self).__init__()
 
+
+        self.program = program
         self.image = pygame.Surface([CMD_WIDTH, 384])
         self.image.fill(hex_to_rgb("#555555"))
 
@@ -43,10 +48,10 @@ class CommandsBox(pygame.sprite.Sprite):
         color = hex_to_rgb("#0085BF")
         self._commands = pygame.sprite.Group()
         for command in commands:
-            sprite = Command(x, y, TKN_WIDTH, TKN_HEIGHT, color, command)
+            sprite = Command(x, y, TKN_WIDTH, TKN_HEIGHT, color, command, self)
             self._commands.add(sprite)
             x, y = CommandsBox.compute_next_grid_location(x, y)
-            
+
         self.render_title()
 
     def render_title(self):
