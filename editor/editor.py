@@ -16,7 +16,8 @@ class Editor:
         self._program.add(Program())
 
     def draw(self):
-
         self._editor.fill(self._color)
         self._commands.draw(self._editor)
+        for box in self._commands:
+            box._commands.draw(self._editor)
         self._program.draw(self._editor)
