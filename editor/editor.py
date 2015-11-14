@@ -2,8 +2,9 @@ import pygame
 
 from command import Command, CommandsBox
 from program import Program
+from events.click import ClickHandler
 
-class Editor:
+class Editor(ClickHandler):
     def __init__(self, rect, color, canvas, level):
         self._editor_rect = rect
         self._editor = canvas.subsurface(self._editor_rect)
@@ -15,6 +16,8 @@ class Editor:
 
         self._program = pygame.sprite.Group()
         self._program.add(Program())
+
+        self.children = [self._commands, self._program]
 
     def draw(self):
         self._editor.fill(self._color)
