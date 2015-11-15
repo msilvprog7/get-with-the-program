@@ -140,6 +140,7 @@ class ProgramActions(pygame.sprite.Sprite):
             self.world.run(self.step_list)
         elif x > 45 and x <= 75:
             print "clicked step"
+            self.world.step(self.step_list, self.world.running_action + 1)
         elif x > 85 and x <= 115:
             print "clicked stop"
             self.world.restart()

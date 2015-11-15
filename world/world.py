@@ -35,6 +35,9 @@ class World:
 		# Test running sequence
 		# self.run(self.test_run[0])
 
+        def set_program(self, sequence):
+                self.sequence = sequence
+
 	def run(self, sequence):
 		""" Start the level with the sequence of actions """
 		self.player.health = 1
@@ -44,9 +47,10 @@ class World:
 		self.running = True
 		self.paused = False
 		self.running_action = 0
-		self.running_counter = 0
-		self.running_max = 60
-		self.sequence = sequence
+                self.running_counter = 0
+		self.running_max = 10
+                self.run_single = False
+                self.set_program(sequence)
 
 	def restart(self):
 		""" Restart the level """
@@ -61,6 +65,12 @@ class World:
 	def pause(self):
 		""" Pause the current level """
 		self.paused = True
+
+        def step(self, sequence, step):
+                """ Execute a single action """
+                self.run(sequence)
+                self.running_action = step
+                self.run_single = True
 
 	def next_level(self):
 		""" Start the next level """
@@ -127,6 +137,10 @@ class World:
 				self.player.run(self.levels[self.current_level])
 
 			self.running_action += 1
+
+                        if self.run_single:
+                                self.run_single = False
+                                self.running = False
 
 		# 1/3 step (for running motion)
 		if self.running and not self.paused and self.running_counter == self.running_max // 3:
