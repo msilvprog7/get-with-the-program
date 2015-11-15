@@ -76,7 +76,7 @@ class ProgramList(pygame.sprite.Sprite):
         # don't allow program edits during running
         if self.parent.world.running:
             return
-        
+
         y = event.pos[1] - self.rect.y
         pos = y / 30
 
@@ -99,7 +99,7 @@ class ProgramList(pygame.sprite.Sprite):
         color = COLOR_WHITE
         if self.parent.world.running and i == self.parent.world.running_action:
             color = COLOR_YELLOW
-            
+
         font = constants.get_font(24)
         text = font.render(step, True, color)
 
@@ -126,7 +126,6 @@ class ProgramActions(pygame.sprite.Sprite):
 
         self.step_list = l
         self.world = world
-        
         self.render_play(5, 0, not self.world.running)
         self.render_step(45, 0, not self.world.running)
         self.render_stop(85, 0, self.world.running)
@@ -141,7 +140,7 @@ class ProgramActions(pygame.sprite.Sprite):
             self.world.run(self.step_list)
         elif x > 45 and x <= 75 and (not self.world.running):
             print "clicked step"
-            self.world.step(self.step_list, self.world.running_action + 1)
+            self.world.step(self.step_list)
         elif x > 85 and x <= 115 and self.world.running:
             print "clicked stop"
             self.world.restart()
