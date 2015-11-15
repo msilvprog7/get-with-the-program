@@ -44,6 +44,7 @@ class World:
 		if restart:
 			self.running_action = 0
 			self.player.position = self.levels[self.current_level].player_pos
+
 		self.player.health = 1
 		self.player.winner = False
 		self.player.speed = Speed.WALK
