@@ -26,12 +26,16 @@ if __name__ == '__main__':
     unit_size = (64, 64)
 
     # Create main entities
-    player = Player(position=(0, 0), size=unit_size, color=colors['green'])    
+    player = Player(position=(0, 0), size=unit_size, color=colors['green'])
+    player.set_sprite_sheet("resources/blob_hero.bmp")
+
     levels = [Level(1, '---------------!', ['Step'], (0, 192), unit_size), \
         Level(2, '---_-_----_----!', ['Step', 'Jump'], (0, 192), unit_size), \
         Level(3, '---__-_--------!', ['Step', 'Jump', 'Walk', 'Run'], (0, 192), unit_size), \
-        Level(4, '------&--^---^^!', ['Step', 'Jump', 'Walk', 'Run', 'Roll'], (0, 192), unit_size)]
+        Level(4, '--_---&--^---^^!', ['Step', 'Jump', 'Walk', 'Run', 'Roll'], (0, 192), unit_size)]
     world = World(canvas, pygame.Rect(0, 0, 1024, 384), colors['white'], player, levels)
+
+    world.set_bg(pygame.transform.scale(pygame.image.load("resources/background2.bmp"), (1024, 384)))
 
     editor = Editor(pygame.Rect(0, 384, 1024, 384), colors['white'], canvas, levels[0], world)
 

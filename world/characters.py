@@ -128,6 +128,28 @@ class Player(Character):
 		self.size = size
 		self.image = pygame.Surface([size[0], size[1]])
 		self.image.fill(color)
+		self.sprite_sheet = None
+
+	def set_sprite_sheet(self, file):
+		""" Set the sprite sheet """
+		self.sprite_sheet = pygame.image.load(file).convert()
+		self.sprite_sheet_pos = (257, 12)
+		self.sprite_sheet_size = (30, 57)
+		self.sprite_offset = (0, 10)
+
+	def get_sprite(self):
+		""" Get the current sprite """
+		rect = pygame.Rect((self.sprite_sheet_pos[0], self.sprite_sheet_pos[1], \
+			self.sprite_sheet_size[0], self.sprite_sheet_size[1]))
+		image = pygame.Surface(rect.size).convert()
+		image.blit(self.sprite_sheet, (0, 0), rect)
+		image.set_colorkey((255, 255, 255), pygame.RLEACCEL)
+		return image
+
+	def get_sprite_position(self):
+		""" Get the current sprite's position """
+		return (self.position[0] + (self.size[0] - self.sprite_sheet_size[0]) // 2 + self.sprite_offset[0], \
+			self.position[1] + (self.size[1] - self.sprite_sheet_size[1]) // 2 + self.sprite_offset[1])
 
 	def check_for_death(self, level):
 		""" Check if player has gone off screen, collided with an object, or collided with ceiling spikes """
