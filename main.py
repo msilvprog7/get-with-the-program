@@ -32,7 +32,7 @@ if __name__ == '__main__':
     world = World(canvas, pygame.Rect(0, 0, 1024, 384), colors['white'], player, levels)
     world.run()
 
-    editor = Editor(pygame.Rect(0, 384, 1024, 384), colors['white'], canvas, levels[1])
+    editor = Editor(pygame.Rect(0, 384, 1024, 384), colors['white'], canvas, levels[0])
 
     children = [world, editor]
 
