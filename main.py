@@ -29,6 +29,8 @@ if __name__ == '__main__':
 
     # Create main entities
     player = Player(position=(0, 0), size=unit_size, color=colors['green'])
+    player.set_sprite_sheet("resources/blob_hero.bmp")
+
     levels = [Level(1, '---------------!', ['Step'], (0, 192), unit_size), \
         Level(2, '---_-_----_----!', ['Step', 'Jump'], (0, 192), unit_size), \
         Level(3, '---__-_--------!', ['Step', 'Jump', 'Walk', 'Run'], (0, 192), unit_size), \
@@ -43,6 +45,7 @@ if __name__ == '__main__':
     world_rect = pygame.Rect(0, 0, 1024, 384)
     world = World(canvas, world_rect, colors['white'], player, levels)
     game_over = GameOver(canvas, world_rect, world)
+    world.set_bg(pygame.transform.scale(pygame.image.load("resources/background2.bmp"), (1024, 384)))
 
     editor = Editor(pygame.Rect(0, 384, 1024, 384), colors['white'], canvas, levels, world)
 

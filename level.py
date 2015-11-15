@@ -1,10 +1,13 @@
 import pygame
 
 colors = {
+	'black': (0, 0, 0),
 	'red': (255, 0, 0),
 	'blue': (0, 0, 255),
 	'dark-red': (148, 35, 35),
-	'dark-blue': (63, 62, 85)
+	'dark-blue': (63, 62, 85),
+	'dark-green': (79, 94, 31),
+	'dark-yellow': (93, 85, 31)
 }
 
 class Level:
@@ -24,45 +27,59 @@ class Level:
     		self.add_sprite(current_char)
     		self.current_sprites += 1
 
+    def get_floor_tile(self, position):
+    	""" Return floor step """
+    	floor = LevelSprite(position, \
+    		(self.unit_size[0], self.unit_size[1]), \
+    		colors['dark-green'])
+    	floor.set_sprite_sheet("resources/floor.bmp", (0, 0), (64, 64), (0, 0))
+    	return floor
+
     def add_sprite(self, current_char):
     	""" Generate sprite for current representation """
     	if current_char == "-":
     		# Land piece
-    		self.sprites.append(LevelSprite((self.player_pos[0] + self.current_sprites * self.unit_size[0], self.player_pos[1] + self.unit_size[1]), \
-    			(self.unit_size[0], 2 * self.unit_size[1]), \
-    			colors['red']))
+    		self.sprites.append(self.get_floor_tile((self.player_pos[0] + self.current_sprites * self.unit_size[0], self.player_pos[1] + self.unit_size[1])))
+    		self.sprites.append(self.get_floor_tile((self.player_pos[0] + self.current_sprites * self.unit_size[0], self.player_pos[1] + 2 * self.unit_size[1])))
     	elif current_char == "_":
     		# Hole
-    		self.sprites.append(LevelSprite((self.player_pos[0] + self.current_sprites * self.unit_size[0], self.player_pos[1] + 2 * self.unit_size[1]), \
-    			self.unit_size, \
-    			colors['red']))
+    		self.sprites.append(self.get_floor_tile((self.player_pos[0] + self.current_sprites * self.unit_size[0], self.player_pos[1] + 2 * self.unit_size[1])))
     	elif current_char == "!":
     		# Finish flag
-    		self.sprites.append(LevelSprite((self.player_pos[0] + self.current_sprites * self.unit_size[0], self.player_pos[1]), \
+    		flag = LevelSprite((self.player_pos[0] + self.current_sprites * self.unit_size[0], self.player_pos[1]), \
     			self.unit_size, \
-    			colors['blue']))
-    		self.sprites.append(LevelSprite((self.player_pos[0] + self.current_sprites * self.unit_size[0], self.player_pos[1] + self.unit_size[1]), \
-    			(self.unit_size[0], 2 * self.unit_size[1]), \
-    			colors['red']))
+    			colors['blue'])
+    		flag.set_sprite_sheet("resources/flag.bmp", (0, 0), (15, 55), (0, 0))
+    		self.sprites.append(flag)
+
+    		self.sprites.append(self.get_floor_tile((self.player_pos[0] + self.current_sprites * self.unit_size[0], self.player_pos[1] + self.unit_size[1])))
+    		self.sprites.append(self.get_floor_tile((self.player_pos[0] + self.current_sprites * self.unit_size[0], self.player_pos[1] + 2 * self.unit_size[1])))
     	elif current_char == "&":
     		# Standing object
-    		self.sprites.append(LevelSprite((self.player_pos[0] + self.current_sprites * self.unit_size[0], self.player_pos[1]), \
+    		bug = LevelSprite((self.player_pos[0] + self.current_sprites * self.unit_size[0], self.player_pos[1]), \
     			self.unit_size, \
-    			colors['dark-red']))
-    		self.sprites.append(LevelSprite((self.player_pos[0] + self.current_sprites * self.unit_size[0], self.player_pos[1] + self.unit_size[1]), \
-    			(self.unit_size[0], 2 * self.unit_size[1]), \
-    			colors['red']))
+    			colors['dark-red'])
+    		bug.set_sprite_sheet("resources/beatles.bmp", (82, 144), (64, 40), (0, 20), scale=(458, 202))
+    		self.sprites.append(bug)
+    		self.sprites.append(self.get_floor_tile((self.player_pos[0] + self.current_sprites * self.unit_size[0], self.player_pos[1] + self.unit_size[1])))
+    		self.sprites.append(self.get_floor_tile((self.player_pos[0] + self.current_sprites * self.unit_size[0], self.player_pos[1] + 2 * self.unit_size[1])))
     	elif current_char == "^":
+    		# Ceiling
+    		self.sprites.append(self.get_floor_tile((self.player_pos[0] + self.current_sprites * self.unit_size[0], self.player_pos[1] - 3 * self.unit_size[1])))
+    		self.sprites.append(self.get_floor_tile((self.player_pos[0] + self.current_sprites * self.unit_size[0], self.player_pos[1] - 2 * self.unit_size[1])))
+    		self.sprites.append(self.get_floor_tile((self.player_pos[0] + self.current_sprites * self.unit_size[0], self.player_pos[1] - self.unit_size[1])))
+
     		# Ceiling spike
-    		self.sprites.append(LevelSprite((self.player_pos[0] + self.current_sprites * self.unit_size[0], self.player_pos[1]), \
+    		dangle = LevelSprite((self.player_pos[0] + self.current_sprites * self.unit_size[0], self.player_pos[1]), \
     			self.unit_size, \
-    			colors['dark-blue']))
-    		self.sprites.append(LevelSprite((self.player_pos[0] + self.current_sprites * self.unit_size[0], self.player_pos[1] - 3 * self.unit_size[1]), \
-    			(self.unit_size[0], 3 * self.unit_size[1]), \
-    			colors['red']))
-    		self.sprites.append(LevelSprite((self.player_pos[0] + self.current_sprites * self.unit_size[0], self.player_pos[1] + self.unit_size[1]), \
-    			(self.unit_size[0], 2 * self.unit_size[1]), \
-    			colors['red']))
+    			colors['dark-blue'])
+    		dangle.set_sprite_sheet("resources/dangle.bmp", (90, 0), (23, 88), (0, -30))
+    		self.sprites.append(dangle)
+
+    		# Floor
+    		self.sprites.append(self.get_floor_tile((self.player_pos[0] + self.current_sprites * self.unit_size[0], self.player_pos[1] + self.unit_size[1])))
+    		self.sprites.append(self.get_floor_tile((self.player_pos[0] + self.current_sprites * self.unit_size[0], self.player_pos[1] + 2 * self.unit_size[1])))
+
 
     def hole_beneath(self, character):
     	""" Return whether or not the character has a hole beneath it """
@@ -101,3 +118,30 @@ class LevelSprite(pygame.sprite.Sprite):
 		self.image.fill(color)
 
 		self.position = position
+
+		self.sprite_sheet = None
+
+		self.size = size
+
+	def set_sprite_sheet(self, file, pos, size, offset, scale=None):
+		""" Set the sprite sheet """
+		self.sprite_sheet = pygame.image.load(file).convert()
+		if scale:
+			self.sprite_sheet = pygame.transform.scale(self.sprite_sheet, scale)
+		self.sprite_sheet_pos = pos
+		self.sprite_sheet_size = size
+		self.sprite_offset = offset
+
+	def get_sprite(self):
+		""" Get the current sprite """
+		rect = pygame.Rect((self.sprite_sheet_pos[0], self.sprite_sheet_pos[1], \
+			self.sprite_sheet_size[0], self.sprite_sheet_size[1]))
+		image = pygame.Surface(rect.size).convert()
+		image.blit(self.sprite_sheet, (0, 0), rect)
+		image.set_colorkey((255, 255, 255), pygame.RLEACCEL)
+		return image
+
+	def get_sprite_position(self):
+		""" Get the current sprite's position """
+		return (self.position[0] + (self.size[0] - self.sprite_sheet_size[0]) // 2 + self.sprite_offset[0], \
+			self.position[1] + (self.size[1] - self.sprite_sheet_size[1]) // 2 + self.sprite_offset[1])

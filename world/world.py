@@ -13,6 +13,7 @@ class World:
 
 		# Set world bg color
 		self.color = color
+		self.bg_image = None
 
 		# Set player
 		self.player = player
@@ -36,6 +37,10 @@ class World:
 		# !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 		# Test running sequence
 		# self.run(self.test_run[0])
+
+	def set_bg(self, bg):
+		""" Set the background image """
+		self.bg_image = bg
 
 	def set_program(self, sequence):
 		self.sequence = sequence
@@ -170,12 +175,24 @@ class World:
 			elif not self.player.can_roll:
 				self.player.step(self.levels[self.current_level])
 
-		self.world.fill(self.color)
-		self.world.blit(self.player.image, self.player.position)
+		# Display bg
+		if self.bg_image:
+			self.world.blit(self.bg_image, (0, 0))
+		else:
+			self.world.fill(self.color)
+
+		# Display player
+		if self.player.sprite_sheet:
+			self.world.blit(self.player.get_sprite(), self.player.get_sprite_position())
+		else:
+			self.world.blit(self.player.image, self.player.position)
 
 		# End early if no more levels
 		if self.current_level >= len(self.levels):
 			return
 
 		for item in self.levels[self.current_level].sprites:
-			self.world.blit(item.image, item.position)
+			if item.sprite_sheet:
+				self.world.blit(item.get_sprite(), item.get_sprite_position())
+			else:
+				self.world.blit(item.image, item.position)
