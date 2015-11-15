@@ -20,7 +20,7 @@ class World:
 
 		# Set levels
 		self.levels = levels
-		self.current_level = 3
+		self.current_level = 0
 		self.player.position = self.levels[self.current_level].player_pos
 
 		# State of the system running
@@ -49,6 +49,7 @@ class World:
 		if restart:
 			self.running_action = 0
 			self.player.position = self.levels[self.current_level].player_pos
+
 		self.player.health = 1
 		self.player.winner = False
 		self.player.speed = Speed.WALK

@@ -32,12 +32,18 @@ if __name__ == '__main__':
     levels = [Level(1, '---------------!', ['Step'], (0, 192), unit_size), \
         Level(2, '---_-_----_----!', ['Step', 'Jump'], (0, 192), unit_size), \
         Level(3, '---__-_--------!', ['Step', 'Jump', 'Walk', 'Run'], (0, 192), unit_size), \
-        Level(4, '--_---&--^---^^!', ['Step', 'Jump', 'Walk', 'Run', 'Roll'], (0, 192), unit_size)]
-    world = World(canvas, pygame.Rect(0, 0, 1024, 384), colors['white'], player, levels)
+        Level(4, '------^--^---_-!', ['Step', 'Jump', 'Walk', 'Run', 'Roll'], (0, 192), unit_size), \
+        Level(5, '---^^---__--^--!', ['Step', 'Jump', 'Walk', 'Run', 'Roll'], (0, 192), unit_size), \
+        Level(6, '---__---^^-_-_-!', ['Step', 'Jump', 'Walk', 'Run', 'Roll'], (0, 192), unit_size), \
+        Level(7, '--&-_---^^--_--!', ['Step', 'Jump', 'Walk', 'Run', 'Roll'], (0, 192), unit_size), \
+        Level(8, '-^---&&--^---^^!', ['Step', 'Jump', 'Walk', 'Run', 'Roll'], (0, 192), unit_size), \
+        Level(9, '---^^-^^-^^-^^-!', ['Step', 'Jump', 'Walk', 'Run', 'Roll'], (0, 192), unit_size), \
+        Level(10, '-_-^-_-&---__-!', ['Step', 'Jump', 'Walk', 'Run', 'Roll'], (0, 192), unit_size)]
 
+    world = World(canvas, pygame.Rect(0, 0, 1024, 384), colors['white'], player, levels)
     world.set_bg(pygame.transform.scale(pygame.image.load("resources/background2.bmp"), (1024, 384)))
 
-    editor = Editor(pygame.Rect(0, 384, 1024, 384), colors['white'], canvas, levels[0], world)
+    editor = Editor(pygame.Rect(0, 384, 1024, 384), colors['white'], canvas, levels, world)
 
     children = [world, editor]
 

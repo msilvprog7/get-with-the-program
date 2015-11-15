@@ -26,6 +26,7 @@ class Program(pygame.sprite.Sprite,ClickHandler):
         self.step_list = steps
 
         self.world = world
+        self.current = world.current_level
 
         self.render_text()
 
@@ -40,7 +41,7 @@ class Program(pygame.sprite.Sprite,ClickHandler):
         self.render_steps()
 
     def render_actions(self, world):
-        self.actions = ProgramActions(0, 0, self.step_list, world)
+        self.actions = ProgramActions(0, 0, self, world)
         right = self.image.get_width() - self.actions.image.get_width()
         self.actions.rect.x = right
         self.actions.rect.y = 10
@@ -53,6 +54,10 @@ class Program(pygame.sprite.Sprite,ClickHandler):
         self.image.blit(text, (10, 10))
 
     def render_steps(self):
+        if self.world.current_level is not self.current:
+            self.step_list = []
+            self.current = self.world.current_level
+
         self.steps = ProgramList(10, 50, self.step_list, self)
         self.image.blit(self.steps.image, (10, 50))
 
@@ -103,7 +108,10 @@ class ProgramList(pygame.sprite.Sprite):
         font = constants.get_font(24)
         text = font.render(step, True, color)
 
-        self.image.blit(text, (20, i*30))
+        if i > 10:
+            self.image.blit(text, (200, (i-11)*30))
+        else:
+            self.image.blit(text, (20, i*30))
 
 class ProgramActions(pygame.sprite.Sprite):
     PLAY_COLOR    = h2r("#0BD91E")
@@ -114,7 +122,7 @@ class ProgramActions(pygame.sprite.Sprite):
 
     ICON_Y = 8
 
-    def __init__(self, x, y, l, world):
+    def __init__(self, x, y, parent, world):
         super(ProgramActions, self).__init__()
 
         self.image = pygame.Surface([170, 50])
@@ -124,8 +132,9 @@ class ProgramActions(pygame.sprite.Sprite):
         self.rect.x = x
         self.rect.y = y
 
-        self.step_list = l
-        self.world = world
+        self.parent = parent
+        self.world  = world
+
         self.render_play(5, 0, not self.world.running)
         self.render_step(45, 0, not self.world.running)
         self.render_stop(85, 0, self.world.running)
@@ -137,10 +146,10 @@ class ProgramActions(pygame.sprite.Sprite):
 
         if x > 5 and x <= 35 and (not self.world.running):
             print "clicked play"
-            self.world.run(self.step_list)
+            self.world.run(self.parent.step_list)
         elif x > 45 and x <= 75 and (not self.world.running):
             print "clicked step"
-            self.world.step(self.step_list)
+            self.world.step(self.parent.step_list)
         elif x > 85 and x <= 115 and self.world.running:
             print "clicked stop"
             self.world.restart()

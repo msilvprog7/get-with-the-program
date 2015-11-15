@@ -35,10 +35,9 @@ class Command(pygame.sprite.Sprite):
         self.image.blit(text, ((TKN_WIDTH - text.get_width())/2, (TKN_HEIGHT - text.get_height())/2))
 
 class CommandsBox(pygame.sprite.Sprite):
-    def __init__(self, commands, program, world):
+    def __init__(self, levels, program, world, parent):
         # Call the parent constructor
         super(CommandsBox, self).__init__()
-
 
         self.program = program
         self.image = pygame.Surface([CMD_WIDTH, 384])
@@ -49,7 +48,13 @@ class CommandsBox(pygame.sprite.Sprite):
         self.rect.x = LVL_WIDTH
 
         self.world = world
+        self.parent = parent
 
+        self.levels = levels
+        commands = self.levels[0]._tokens
+        self.draw(commands, True)
+
+    def draw(self, commands, init):
         x, y = LVL_WIDTH + TKN_PDDNG, TITLE_SIZE + TKN_PDDNG + 5
         color = hex_to_rgb("#0085BF")
         self._commands = pygame.sprite.Group()
@@ -59,6 +64,13 @@ class CommandsBox(pygame.sprite.Sprite):
             x, y = CommandsBox.compute_next_grid_location(x, y)
 
         self.render_title()
+
+        if not init:
+            self.parent.update_children()
+
+    def update(self):
+        lvl = self.world.current_level
+        self.draw(self.levels[lvl]._tokens, False)
 
     def render_title(self):
         font = get_font(TITLE_SIZE)
