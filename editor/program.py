@@ -103,8 +103,6 @@ class ProgramList(pygame.sprite.Sprite):
         font = constants.get_font(24)
         text = font.render(step, True, color)
 
-        print i
-
         if i > 10:
             self.image.blit(text, (200, (i-11)*30))
         else:
@@ -131,7 +129,7 @@ class ProgramActions(pygame.sprite.Sprite):
 
         self.parent = parent
         self.world  = world
-        
+
         self.render_play(5, 0, not self.world.running)
         self.render_step(45, 0, not self.world.running)
         self.render_stop(85, 0, self.world.running)
