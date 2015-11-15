@@ -1,6 +1,8 @@
 import pygame
 from world.world import World
 from world.characters import Player
+from world.gameover import GameOver
+
 from editor.editor import Editor
 from level import Level
 from events.click import delegate
@@ -31,11 +33,16 @@ if __name__ == '__main__':
         Level(2, '---_-_----_----!', ['Step', 'Jump'], (0, 192), unit_size), \
         Level(3, '---__-_--------!', ['Step', 'Jump', 'Walk', 'Run'], (0, 192), unit_size), \
         Level(4, '------&--^---^^!', ['Step', 'Jump', 'Walk', 'Run', 'Roll'], (0, 192), unit_size)]
-    world = World(canvas, pygame.Rect(0, 0, 1024, 384), colors['white'], player, levels)
+
+    world_rect = pygame.Rect(0, 0, 1024, 384)
+    world = World(canvas, world_rect, colors['white'], player, levels)
+    game_over = GameOver(canvas, world_rect, world)
 
     editor = Editor(pygame.Rect(0, 384, 1024, 384), colors['white'], canvas, levels, world)
 
-    children = [world, editor]
+    children = [editor, game_over]
+
+    
 
     while not done:
         clock.tick(framerate)
@@ -49,6 +56,11 @@ if __name__ == '__main__':
         #sprites.update()
         world.draw()
         screen.blit(world.world, (0, 0))
+
+        if world.game_over:
+            game_over.draw()
+            screen.blit(game_over.image, (0, 0))
+        
         editor.draw()
         screen.blit(editor._editor, (0, 384))
         #sprites.draw(screen)

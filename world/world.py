@@ -25,6 +25,7 @@ class World:
 		# State of the system running
 		self.running = False
 		self.running_action = 0
+                self.game_over = False
 
 		# Test squences
 		self.test_run = [['Step' for i in range(15)], \
@@ -58,6 +59,7 @@ class World:
 		""" Restart the level """
 		self.running_action = 0
 		self.running = False
+                self.game_over = False
 
 		# Move to start
 		self.player.position = self.levels[self.current_level].player_pos
@@ -112,7 +114,9 @@ class World:
 			# If death
 			if self.player.health == 0:
 				print "Gameover on level %d" % (self.current_level + 1, )
-				self.restart()
+                                self.game_over = True
+                                self.running = False
+				# self.restart()
 				return
 
 
