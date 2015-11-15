@@ -19,7 +19,7 @@ class Editor(ClickHandler):
         self._commands.add(CommandsBox(levels, self._program.sprites()[0], world, self))
 
         self._levels = pygame.sprite.Group()
-        self._levels.add(Levels(1))
+        self._levels.add(Levels(world, self))
         
         self.update_children()
 
