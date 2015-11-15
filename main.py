@@ -28,9 +28,10 @@ if __name__ == '__main__':
     # Create main entities
     player = Player(position=(0, 0), size=unit_size, color=colors['green'])    
     levels = [Level(1, '---------------!', ['Step'], (0, 192), unit_size), \
-        Level(2, '---_-_----_----!', ['Step', 'Jump'], (0, 192), unit_size)]
+        Level(2, '---_-_----_----!', ['Step', 'Jump'], (0, 192), unit_size), \
+        Level(3, '---__-_--------!', ['Step', 'Jump', 'Walk', 'Run'], (0, 192), unit_size), \
+        Level(4, '------&--^---^^!', ['Step', 'Jump', 'Walk', 'Run', 'Roll'], (0, 192), unit_size)]
     world = World(canvas, pygame.Rect(0, 0, 1024, 384), colors['white'], player, levels)
-    world.run()
 
     editor = Editor(pygame.Rect(0, 384, 1024, 384), colors['white'], canvas, levels[0])
 
