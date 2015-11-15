@@ -3,8 +3,9 @@ import constants
 from constants import hex_to_rgb as h2r
 from events.click import ClickHandler
 
-BG_COLOR    = h2r("#333333")
-COLOR_WHITE = h2r("#ffffff")
+BG_COLOR     = h2r("#333333")
+COLOR_WHITE  = h2r("#ffffff")
+COLOR_YELLOW = h2r("#E3AD0B")
 
 TITLE_SIZE = 30
 
@@ -24,6 +25,8 @@ class Program(pygame.sprite.Sprite,ClickHandler):
         self.rect.x = constants.LVL_WIDTH + constants.CMD_WIDTH
         self.step_list = steps
 
+        self.world = world
+
         self.render_text()
 
         self.render_actions(world)
@@ -31,6 +34,9 @@ class Program(pygame.sprite.Sprite,ClickHandler):
 
         self.render_steps()
         self.children.append(self.steps)
+
+    def update(self):
+        self.render_steps()
 
     def render_actions(self, world):
         self.actions = ProgramActions(0, 0, self.step_list, world)
@@ -66,6 +72,10 @@ class ProgramList(pygame.sprite.Sprite):
             self.render_step(i, step)
 
     def click(self, event):
+        # don't allow program edits during running
+        if self.parent.world.running:
+            return
+        
         y = event.pos[1] - self.rect.y
         pos = y / 30
 
@@ -85,14 +95,18 @@ class ProgramList(pygame.sprite.Sprite):
         self.parent.image.blit(self.image, (10, 50))
 
     def render_step(self, i, step):
+        color = COLOR_WHITE
+        if self.parent.world.running and i == self.parent.world.running_action:
+            color = COLOR_YELLOW
+            
         font = constants.get_font(24)
-        text = font.render(step, True, COLOR_WHITE)
+        text = font.render(step, True, color)
 
         self.image.blit(text, (20, i*30))
 
 class ProgramActions(pygame.sprite.Sprite):
     PLAY_COLOR    = h2r("#0BD91E")
-    PAUSE_COLOR   = h2r("#E3AD0B")
+    PAUSE_COLOR   = COLOR_YELLOW
     STOP_COLOR    = h2r("#CC0000")
     STEP_COLOR    = h2r("#0085BF")
     DISABLE_COLOR = h2r("#999999")

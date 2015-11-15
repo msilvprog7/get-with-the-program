@@ -20,6 +20,10 @@ class Command(pygame.sprite.Sprite):
         self.parent = parent
 
     def click(self, event):
+        # no clicky while running
+        if self.parent.world.running:
+            return
+        
         print "Clicked", self.text
         self.parent.program.step_list.append(self.text)
         self.parent.program.render_steps()
@@ -31,7 +35,7 @@ class Command(pygame.sprite.Sprite):
         self.image.blit(text, ((TKN_WIDTH - text.get_width())/2, (TKN_HEIGHT - text.get_height())/2))
 
 class CommandsBox(pygame.sprite.Sprite):
-    def __init__(self, commands, program):
+    def __init__(self, commands, program, world):
         # Call the parent constructor
         super(CommandsBox, self).__init__()
 
@@ -43,6 +47,8 @@ class CommandsBox(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.y = 0
         self.rect.x = LVL_WIDTH
+
+        self.world = world
 
         x, y = LVL_WIDTH + TKN_PDDNG, TITLE_SIZE + TKN_PDDNG + 5
         color = hex_to_rgb("#0085BF")

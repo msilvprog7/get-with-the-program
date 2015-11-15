@@ -16,7 +16,7 @@ class Editor(ClickHandler):
         self._program.add(Program(world))
 
         self._commands = pygame.sprite.Group()
-        self._commands.add(CommandsBox(level._tokens, self._program.sprites()[0]))
+        self._commands.add(CommandsBox(level._tokens, self._program.sprites()[0], world))
 
         self._levels = pygame.sprite.Group()
         self._levels.add(Levels(level._number))
@@ -34,6 +34,7 @@ class Editor(ClickHandler):
         for box in self._commands:
             box._commands.draw(self._editor)
 
+        self._program.update()
         self._program.draw(self._editor)
 
         self._levels.draw(self._editor)
