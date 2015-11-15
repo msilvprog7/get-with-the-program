@@ -28,12 +28,18 @@ if __name__ == '__main__':
     unit_size = (64, 64)
 
     # Create main entities
-    player = Player(position=(0, 0), size=unit_size, color=colors['green'])    
+    player = Player(position=(0, 0), size=unit_size, color=colors['green'])
     levels = [Level(1, '---------------!', ['Step'], (0, 192), unit_size), \
         Level(2, '---_-_----_----!', ['Step', 'Jump'], (0, 192), unit_size), \
         Level(3, '---__-_--------!', ['Step', 'Jump', 'Walk', 'Run'], (0, 192), unit_size), \
-        Level(4, '------&--^---^^!', ['Step', 'Jump', 'Walk', 'Run', 'Roll'], (0, 192), unit_size)]
-
+        Level(4, '------^--^---_-!', ['Step', 'Jump', 'Walk', 'Run', 'Roll'], (0, 192), unit_size), \
+        Level(5, '---^^---__--^--!', ['Step', 'Jump', 'Walk', 'Run', 'Roll'], (0, 192), unit_size), \
+        Level(6, '---__---^^-_-_-!', ['Step', 'Jump', 'Walk', 'Run', 'Roll'], (0, 192), unit_size), \
+        Level(7, '--&-_---^^--_--!', ['Step', 'Jump', 'Walk', 'Run', 'Roll'], (0, 192), unit_size), \
+        Level(8, '-^---&&--^---^^!', ['Step', 'Jump', 'Walk', 'Run', 'Roll'], (0, 192), unit_size), \
+        Level(9, '---^^-^^-^^-^^-!', ['Step', 'Jump', 'Walk', 'Run', 'Roll'], (0, 192), unit_size), \
+        Level(10, '-_-^-_-&---__-!', ['Step', 'Jump', 'Walk', 'Run', 'Roll'], (0, 192), unit_size)]
+    
     world_rect = pygame.Rect(0, 0, 1024, 384)
     world = World(canvas, world_rect, colors['white'], player, levels)
     game_over = GameOver(canvas, world_rect, world)

@@ -41,7 +41,6 @@ class CommandsBox(pygame.sprite.Sprite):
 
         self.program = program
         self.image = pygame.Surface([CMD_WIDTH, 384])
-        self.image.fill(hex_to_rgb("#555555"))
 
         self.rect = self.image.get_rect()
         self.rect.y = 0
@@ -55,6 +54,8 @@ class CommandsBox(pygame.sprite.Sprite):
         self.draw(commands, True)
 
     def draw(self, commands, init):
+        self.image.fill(hex_to_rgb("#555555"))
+        
         x, y = LVL_WIDTH + TKN_PDDNG, TITLE_SIZE + TKN_PDDNG + 5
         color = hex_to_rgb("#0085BF")
         self._commands = pygame.sprite.Group()
