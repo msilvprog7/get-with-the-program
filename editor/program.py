@@ -36,6 +36,7 @@ class Program(pygame.sprite.Sprite,ClickHandler):
         self.children.append(self.steps)
 
     def update(self):
+        self.render_actions(self.world)
         self.render_steps()
 
     def render_actions(self, world):
@@ -126,25 +127,25 @@ class ProgramActions(pygame.sprite.Sprite):
         self.step_list = l
         self.world = world
         
-        self.render_play(5, 0, True)
-        self.render_step(45, 0, True)
-        self.render_stop(85, 0, False)
-        self.render_pause(125, 0, False)
+        self.render_play(5, 0, not self.world.running)
+        self.render_step(45, 0, not self.world.running)
+        self.render_stop(85, 0, self.world.running)
+        self.render_pause(125, 0, self.world.running)
 
     def click(self, event):
         x = event.pos[0] - self.rect.x
         print x, self.rect.x
 
-        if x > 5 and x <= 35:
+        if x > 5 and x <= 35 and (not self.world.running):
             print "clicked play"
             self.world.run(self.step_list)
-        elif x > 45 and x <= 75:
+        elif x > 45 and x <= 75 and (not self.world.running):
             print "clicked step"
             self.world.step(self.step_list, self.world.running_action + 1)
-        elif x > 85 and x <= 115:
+        elif x > 85 and x <= 115 and self.world.running:
             print "clicked stop"
             self.world.restart()
-        elif x > 125:
+        elif x > 125 and self.world.running:
             print "clicked pause"
             self.world.pause()
 
