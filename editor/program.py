@@ -11,7 +11,7 @@ TITLE_SIZE = 30
 STARTING_STEPS = ["Step", "Step", "Step", "Step"]
 
 class Program(pygame.sprite.Sprite,ClickHandler):
-    def __init__(self, steps=STARTING_STEPS):
+    def __init__(self, world, steps=STARTING_STEPS):
         # Call the parent constructor
         super(Program, self).__init__()
         self.children = []
@@ -26,14 +26,14 @@ class Program(pygame.sprite.Sprite,ClickHandler):
 
         self.render_text()
 
-        self.render_actions()
+        self.render_actions(world)
         self.children.append(self.actions)
 
         self.render_steps()
         self.children.append(self.steps)
 
-    def render_actions(self):
-        self.actions = ProgramActions(0, 0)
+    def render_actions(self, world):
+        self.actions = ProgramActions(0, 0, self.step_list, world)
         right = self.image.get_width() - self.actions.image.get_width()
         self.actions.rect.x = right
         self.actions.rect.y = 10
@@ -99,7 +99,7 @@ class ProgramActions(pygame.sprite.Sprite):
 
     ICON_Y = 8
 
-    def __init__(self, x, y):
+    def __init__(self, x, y, l, world):
         super(ProgramActions, self).__init__()
 
         self.image = pygame.Surface([170, 50])
@@ -109,6 +109,9 @@ class ProgramActions(pygame.sprite.Sprite):
         self.rect.x = x
         self.rect.y = y
 
+        self.step_list = l
+        self.world = world
+        
         self.render_play(5, 0, True)
         self.render_step(45, 0, True)
         self.render_stop(85, 0, False)
@@ -120,12 +123,15 @@ class ProgramActions(pygame.sprite.Sprite):
 
         if x > 5 and x <= 35:
             print "clicked play"
+            self.world.run(self.step_list)
         elif x > 45 and x <= 75:
             print "clicked step"
         elif x > 85 and x <= 115:
             print "clicked stop"
+            self.world.restart()
         elif x > 125:
             print "clicked pause"
+            self.world.pause()
 
     def get_ctx(self):
         ctx = pygame.Surface([30, 30])

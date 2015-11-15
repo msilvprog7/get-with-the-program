@@ -6,14 +6,14 @@ from events.click import ClickHandler
 from levels import Levels, LevelBox
 
 class Editor(ClickHandler):
-    def __init__(self, rect, color, canvas, level):
+    def __init__(self, rect, color, canvas, level, world):
         self._editor_rect = rect
         self._editor = canvas.subsurface(self._editor_rect)
         self._color = color
         self._level = level
 
         self._program = pygame.sprite.Group()
-        self._program.add(Program())
+        self._program.add(Program(world))
 
         self._commands = pygame.sprite.Group()
         self._commands.add(CommandsBox(level._tokens, self._program.sprites()[0]))

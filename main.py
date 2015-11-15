@@ -33,7 +33,7 @@ if __name__ == '__main__':
         Level(4, '------&--^---^^!', ['Step', 'Jump', 'Walk', 'Run', 'Roll'], (0, 192), unit_size)]
     world = World(canvas, pygame.Rect(0, 0, 1024, 384), colors['white'], player, levels)
 
-    editor = Editor(pygame.Rect(0, 384, 1024, 384), colors['white'], canvas, levels[0])
+    editor = Editor(pygame.Rect(0, 384, 1024, 384), colors['white'], canvas, levels[0], world)
 
     children = [world, editor]
 
