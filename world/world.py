@@ -24,6 +24,7 @@ class World:
 
 		# State of the system running
 		self.running = False
+		self.running_action = 0
 
 		# Test squences
 		self.test_run = [['Step' for i in range(15)], \
@@ -35,25 +36,27 @@ class World:
 		# Test running sequence
 		# self.run(self.test_run[0])
 
-        def set_program(self, sequence):
-                self.sequence = sequence
+	def set_program(self, sequence):
+		self.sequence = sequence
 
-	def run(self, sequence):
+	def run(self, sequence, restart=True):
 		""" Start the level with the sequence of actions """
+		if restart:
+			self.running_action = 0
+			self.player.position = self.levels[self.current_level].player_pos
 		self.player.health = 1
 		self.player.winner = False
 		self.player.speed = Speed.WALK
-		self.player.position = self.levels[self.current_level].player_pos
 		self.running = True
 		self.paused = False
-		self.running_action = 0
-                self.running_counter = 0
+		self.running_counter = 0
 		self.running_max = 10
-                self.run_single = False
-                self.set_program(sequence)
+		self.run_single = False
+		self.set_program(sequence)
 
 	def restart(self):
 		""" Restart the level """
+		self.running_action = 0
 		self.running = False
 
 		# Move to start
@@ -66,11 +69,10 @@ class World:
 		""" Pause the current level """
 		self.paused = True
 
-        def step(self, sequence, step):
-                """ Execute a single action """
-                self.run(sequence)
-                self.running_action = step
-                self.run_single = True
+	def step(self, sequence):
+		""" Execute a single action """
+		self.run(sequence, False)
+		self.run_single = True
 
 	def next_level(self):
 		""" Start the next level """
@@ -138,9 +140,9 @@ class World:
 
 			self.running_action += 1
 
-                        if self.run_single:
-                                self.run_single = False
-                                self.running = False
+			if self.run_single:
+				self.run_single = False
+				self.running = False
 
 		# 1/3 step (for running motion)
 		if self.running and not self.paused and self.running_counter == self.running_max // 3:
@@ -172,4 +174,3 @@ class World:
 
 		for item in self.levels[self.current_level].sprites:
 			self.world.blit(item.image, item.position)
-
