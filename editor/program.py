@@ -103,7 +103,12 @@ class ProgramList(pygame.sprite.Sprite):
         font = constants.get_font(24)
         text = font.render(step, True, color)
 
-        self.image.blit(text, (20, i*30))
+        print i
+
+        if i > 10:
+            self.image.blit(text, (200, (i-11)*30))
+        else:
+            self.image.blit(text, (20, i*30))
 
 class ProgramActions(pygame.sprite.Sprite):
     PLAY_COLOR    = h2r("#0BD91E")
